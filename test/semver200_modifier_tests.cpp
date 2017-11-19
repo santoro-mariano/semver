@@ -223,7 +223,7 @@ BOOST_AUTO_TEST_CASE(inc_major) {
 	BOOST_CHECK(v2.build() == "");
 
 	// Check non-default increment
-	auto v2 = v.inc_major(3);
+	v2 = v.inc_major(3);
 	BOOST_CHECK(v2.major() == 4);
 	BOOST_CHECK(v2.minor() == 0);
 	BOOST_CHECK(v2.patch() == 0);
@@ -257,7 +257,7 @@ BOOST_AUTO_TEST_CASE(inc_minor) {
 	BOOST_CHECK(v2.build() == "");
 
 	// Check non-default increment
-	auto v2 = v.inc_minor(3);
+	v2 = v.inc_minor(3);
 	BOOST_CHECK(v2.major() == 1);
 	BOOST_CHECK(v2.minor() == 5);
 	BOOST_CHECK(v2.patch() == 0);
@@ -291,7 +291,7 @@ BOOST_AUTO_TEST_CASE(inc_patch) {
 	BOOST_CHECK(v2.build() == "");
 
 	// Check default increment
-	auto v2 = v.inc_patch(3);
+	v2 = v.inc_patch(3);
 	BOOST_CHECK(v2.major() == 1);
 	BOOST_CHECK(v2.minor() == 2);
 	BOOST_CHECK(v2.patch() == 6);
