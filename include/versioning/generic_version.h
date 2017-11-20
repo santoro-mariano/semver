@@ -49,6 +49,11 @@ namespace versioning {
         /// Construct Basic_version object using supplied Version_data, Parser, Comparator and Modifier objects.
         GenericVersion(const VersionData& v):BaseVersion(v, std::make_shared<Parser>(), std::make_shared<Comparator>(), std::make_shared<Modifier>())
         {}
+
+    private:
+        static_assert(std::is_base_of<VersionParser, Parser>::value, "Parser parameter must inherit from VersionParser");
+        static_assert(std::is_base_of<VersionComparator, Comparator>::value, "Comparator parameter must inherit from VersionComparator");
+        static_assert(std::is_base_of<VersionModifier, Modifier>::value, "Modifier parameter must inherit from VersionModifier");
     };
 }
 
