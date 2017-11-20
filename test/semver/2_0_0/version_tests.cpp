@@ -25,11 +25,9 @@ SOFTWARE.
 #define BOOST_TEST_MODULE semver200_version_tests
 
 #include <boost/test/unit_test.hpp>
-#include "semver200.h"
+#include <versioning/semver/2_0_0/version.h>
 
-using namespace version;
-
-using v = Semver200_version;
+using v = versioning::semver::v200::Version;
 
 /// Check parsing logic by performing roundtrip - parse string to version object, then
 /// generate string from that object and check if it's identical to source.
@@ -70,9 +68,9 @@ BOOST_AUTO_TEST_CASE(test_ostream_output) {
 
 BOOST_AUTO_TEST_CASE(test_accessors) {
 	auto p = v("1.2.3-pre.rel.1+test.build.321");
-	BOOST_CHECK_EQUAL(p.major(), 1);
-	BOOST_CHECK_EQUAL(p.minor(), 2);
-	BOOST_CHECK_EQUAL(p.patch(), 3);
+	BOOST_CHECK_EQUAL(p.Major(), 1);
+	BOOST_CHECK_EQUAL(p.Minor(), 2);
+	BOOST_CHECK_EQUAL(p.Patch(), 3);
 	BOOST_CHECK_EQUAL(p.prerelease(), "pre.rel.1");
 	BOOST_CHECK_EQUAL(p.build(), "test.build.321");
 }

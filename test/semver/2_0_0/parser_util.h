@@ -26,14 +26,16 @@ SOFTWARE.
 
 #include <boost/test/unit_test.hpp>
 #include <ostream>
-#include "semver200.h"
+#include <versioning/version_data.h>
+#include "versioning/semver/2_0_0/parser.h"
+#include "../../../src/exceptions.h"
 
-version::Semver200_parser p;
-const version::Prerelease_identifiers no_rel_ids;
-const version::Build_identifiers no_build_ids;
+versioning::semver::v200::Parser p;
+const versioning::Prerelease_identifiers no_rel_ids;
+const versioning::Build_identifiers no_build_ids;
 
-#define N Id_type::num
-#define A Id_type::alnum
+#define N versioning::Id_type::num
+#define A versioning::Id_type::alnum
 
 #define BOOST_PATCH BOOST_VERSION % 100
 #define BOOST_MINOR BOOST_VERSION / 100 % 1000
@@ -61,7 +63,7 @@ namespace boost {
 #else
 
 			template<>
-			inline std::ostream& operator<<(std::ostream& os, const print_helper_t<version::Build_identifiers>& ph) {
+			inline std::ostream& operator<<(std::ostream& os, const print_helper_t<versioning::Build_identifiers>& ph) {
 				for (const auto& id: ph.m_t) {
 					os << id << ",";
 				}
@@ -69,7 +71,7 @@ namespace boost {
 			}
 
 			template<>
-			inline std::ostream& operator<<(std::ostream& os, const print_helper_t<version::Prerelease_identifiers>& ph) {
+			inline std::ostream& operator<<(std::ostream& os, const print_helper_t<versioning::Prerelease_identifiers>& ph) {
 				for (const auto& id : ph.m_t) {
 					os << id.first << "|" << static_cast<int>(id.second) << "|" << ",";
 				}
@@ -80,42 +82,49 @@ namespace boost {
 	}
 }
 
-#define CHECK_NORMALS(VER, MAJOR, MINOR, PATCH) { \
-	auto v = p.parse(VER); \
-	BOOST_CHECK_EQUAL(v.major, MAJOR); \
-	BOOST_CHECK_EQUAL(v.minor, MINOR); \
-	BOOST_CHECK_EQUAL(v.patch, PATCH); \
-	BOOST_CHECK_EQUAL(v.prerelease_ids, no_rel_ids); \
-	BOOST_CHECK_EQUAL(v.build_ids, no_build_ids); \
-}
+namespace versioning
+{
+	namespace semver{
+		namespace v200 {
+			#define CHECK_NORMALS(VER, MAJOR, MINOR, PATCH) { \
+				auto v = p.Parse(VER); \
+				BOOST_CHECK_EQUAL(v.major, MAJOR); \
+				BOOST_CHECK_EQUAL(v.minor, MINOR); \
+				BOOST_CHECK_EQUAL(v.patch, PATCH); \
+				BOOST_CHECK_EQUAL(v.prerelease_ids, no_rel_ids); \
+				BOOST_CHECK_EQUAL(v.build_ids, no_build_ids); \
+			}
 
-#define CHECK_PARSE_ERROR(VER) { \
-	BOOST_CHECK_THROW(p.parse(VER), version::Parse_error); \
-}
+			#define CHECK_PARSE_ERROR(VER) { \
+				BOOST_CHECK_THROW(p.Parse(VER), versioning::ParseError); \
+			}
 
-#define CHECK_PREREL(VER, MAJOR, MINOR, PATCH, IDS) { \
-	auto v = p.parse(VER); \
-	BOOST_CHECK_EQUAL(v.major, MAJOR); \
-	BOOST_CHECK_EQUAL(v.minor, MINOR); \
-	BOOST_CHECK_EQUAL(v.patch, PATCH); \
-	BOOST_CHECK_EQUAL(v.prerelease_ids, IDS); \
-	BOOST_CHECK_EQUAL(v.build_ids, no_build_ids); \
-}
+			#define CHECK_PREREL(VER, MAJOR, MINOR, PATCH, IDS) { \
+				auto v = p.Parse(VER); \
+				BOOST_CHECK_EQUAL(v.major, MAJOR); \
+				BOOST_CHECK_EQUAL(v.minor, MINOR); \
+				BOOST_CHECK_EQUAL(v.patch, PATCH); \
+				BOOST_CHECK_EQUAL(v.prerelease_ids, IDS); \
+				BOOST_CHECK_EQUAL(v.build_ids, no_build_ids); \
+			}
 
-#define CHECK_BUILD(VER, MAJOR, MINOR, PATCH, IDS) { \
-	auto v = p.parse(VER); \
-	BOOST_CHECK_EQUAL(v.major, MAJOR); \
-	BOOST_CHECK_EQUAL(v.minor, MINOR); \
-	BOOST_CHECK_EQUAL(v.patch, PATCH); \
-	BOOST_CHECK_EQUAL(v.prerelease_ids, no_rel_ids); \
-	BOOST_CHECK_EQUAL(v.build_ids, IDS); \
-}
+			#define CHECK_BUILD(VER, MAJOR, MINOR, PATCH, IDS) { \
+				auto v = p.Parse(VER); \
+				BOOST_CHECK_EQUAL(v.major, MAJOR); \
+				BOOST_CHECK_EQUAL(v.minor, MINOR); \
+				BOOST_CHECK_EQUAL(v.patch, PATCH); \
+				BOOST_CHECK_EQUAL(v.prerelease_ids, no_rel_ids); \
+				BOOST_CHECK_EQUAL(v.build_ids, IDS); \
+			}
 
-#define CHECK_PREREL_BUILD(VER, MAJOR, MINOR, PATCH, RIDS, BIDS) { \
-	auto v = p.parse(VER); \
-	BOOST_CHECK_EQUAL(v.major, MAJOR); \
-	BOOST_CHECK_EQUAL(v.minor, MINOR); \
-	BOOST_CHECK_EQUAL(v.patch, PATCH); \
-	BOOST_CHECK_EQUAL(v.prerelease_ids, RIDS); \
-	BOOST_CHECK_EQUAL(v.build_ids, BIDS); \
+			#define CHECK_PREREL_BUILD(VER, MAJOR, MINOR, PATCH, RIDS, BIDS) { \
+				auto v = p.Parse(VER); \
+				BOOST_CHECK_EQUAL(v.major, MAJOR); \
+				BOOST_CHECK_EQUAL(v.minor, MINOR); \
+				BOOST_CHECK_EQUAL(v.patch, PATCH); \
+				BOOST_CHECK_EQUAL(v.prerelease_ids, RIDS); \
+				BOOST_CHECK_EQUAL(v.build_ids, BIDS); \
+			}
+		}
+	}
 }

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-project(semver)
+project(versioning)
 set(VERSION_MAJOR   "1")
 set(VERSION_MINOR   "0")
 set(VERSION_PATCH   "0")
@@ -18,7 +18,8 @@ if(HAVE_BUILD)
 endif()
 
 if(UNIX)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wextra -pedantic")
+	#-Werror
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")
 	add_definitions(-std=c++14)
 endif()
 
@@ -31,7 +32,18 @@ if(MSVC)
 	add_definitions(-D_SCL_SECURE_NO_WARNINGS)
 endif()
 
-add_subdirectory(src)
+
+#set sources
+FILE(GLOB_RECURSE LIB_SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
+#set library
+add_library (versioning STATIC ${LIB_SOURCE_FILES})
+
+#set includes
+target_include_directories(versioning PUBLIC
+		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+		$<INSTALL_INTERFACE:include>
+		PRIVATE src)
+
 add_subdirectory(test)
 
 enable_testing()
