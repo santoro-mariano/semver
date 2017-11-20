@@ -71,6 +71,6 @@ BOOST_AUTO_TEST_CASE(test_accessors) {
 	BOOST_CHECK_EQUAL(p.Major(), 1);
 	BOOST_CHECK_EQUAL(p.Minor(), 2);
 	BOOST_CHECK_EQUAL(p.Patch(), 3);
-	BOOST_CHECK_EQUAL(p.prerelease(), "pre.rel.1");
-	BOOST_CHECK_EQUAL(p.build(), "test.build.321");
+	BOOST_CHECK_EQUAL(p.PreRelease(), "pre.rel.1");
+	BOOST_CHECK_EQUAL(p.Build(), "test.build.321");
 }

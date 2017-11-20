@@ -50,13 +50,13 @@ namespace versioning {
         return ver_.patch;
     }
 
-    const std::string BaseVersion::prerelease() const {
+    const std::string BaseVersion::PreRelease() const {
         std::stringstream ss;
         splice(ss, ver_.prerelease_ids, ".", [](const auto& id) { return id.first;});
         return ss.str();
     }
 
-    const std::string BaseVersion::build() const {
+    const std::string BaseVersion::Build() const {
         std::stringstream ss;
         splice(ss, ver_.build_ids, ".", [](const auto& id) { return id;});
         return ss.str();
@@ -133,11 +133,11 @@ namespace versioning {
 
     std::ostream& operator<<(std::ostream& os, const BaseVersion& v) {
         os << v.ver_.major << "." << v.ver_.minor << "." << v.ver_.patch;
-        std::string prl = v.prerelease();
+        std::string prl = v.PreRelease();
         if (!prl.empty()) {
             os << "-" << prl;
         }
-        std::string bld = v.build();
+        std::string bld = v.Build();
         if (!bld.empty()) {
             os << "+" << bld;
         }

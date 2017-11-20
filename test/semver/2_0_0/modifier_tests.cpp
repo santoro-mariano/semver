@@ -40,8 +40,8 @@ Modifier m;
 	BOOST_CHECK(v.Major() == 1); \
 	BOOST_CHECK(v.Minor() == 2); \
 	BOOST_CHECK(v.Patch() == 3); \
-	BOOST_CHECK(v.prerelease() == "pre.rel.0"); \
-	BOOST_CHECK(v.build() == "build.no.321"); \
+	BOOST_CHECK(v.PreRelease() == "pre.rel.0"); \
+	BOOST_CHECK(v.Build() == "build.no.321"); \
 }
 
 BOOST_AUTO_TEST_CASE(set_major) {
@@ -52,8 +52,8 @@ BOOST_AUTO_TEST_CASE(set_major) {
 	BOOST_CHECK(v2.Major() == 2);
 	BOOST_CHECK(v2.Minor() == 2);
 	BOOST_CHECK(v2.Patch() == 3);
-	BOOST_CHECK(v2.prerelease() == "pre.rel.0");
-	BOOST_CHECK(v2.build() == "build.no.321");
+	BOOST_CHECK(v2.PreRelease() == "pre.rel.0");
+	BOOST_CHECK(v2.Build() == "build.no.321");
 
 	// Check invalid values
 	BOOST_CHECK_THROW(v.SetMajor(-1), versioning::ModificationError);
@@ -70,8 +70,8 @@ BOOST_AUTO_TEST_CASE(set_minor) {
 	BOOST_CHECK(v2.Major() == 1);
 	BOOST_CHECK(v2.Minor() == 3);
 	BOOST_CHECK(v2.Patch() == 3);
-	BOOST_CHECK(v2.prerelease() == "pre.rel.0");
-	BOOST_CHECK(v2.build() == "build.no.321");
+	BOOST_CHECK(v2.PreRelease() == "pre.rel.0");
+	BOOST_CHECK(v2.Build() == "build.no.321");
 
 	// Check invalid values
 	BOOST_CHECK_THROW(v.SetMinor(-1), versioning::ModificationError);
@@ -88,8 +88,8 @@ BOOST_AUTO_TEST_CASE(set_patch) {
 	BOOST_CHECK(v2.Major() == 1);
 	BOOST_CHECK(v2.Minor() == 2);
 	BOOST_CHECK(v2.Patch() == 4);
-	BOOST_CHECK(v2.prerelease() == "pre.rel.0");
-	BOOST_CHECK(v2.build() == "build.no.321");
+	BOOST_CHECK(v2.PreRelease() == "pre.rel.0");
+	BOOST_CHECK(v2.Build() == "build.no.321");
 
 	// Check invalid values
 	BOOST_CHECK_THROW(v.SetPatch(-1), versioning::ModificationError);
@@ -106,8 +106,8 @@ BOOST_AUTO_TEST_CASE(set_prerelease) {
 	BOOST_CHECK(v2.Major() == 1);
 	BOOST_CHECK(v2.Minor() == 2);
 	BOOST_CHECK(v2.Patch() == 3);
-	BOOST_CHECK(v2.prerelease() == "alpha.1");
-	BOOST_CHECK(v2.build() == "build.no.321");
+	BOOST_CHECK(v2.PreRelease() == "alpha.1");
+	BOOST_CHECK(v2.Build() == "build.no.321");
 
 	// Check source version is unaffected
 	CHECK_SRC
@@ -121,8 +121,8 @@ BOOST_AUTO_TEST_CASE(set_build) {
 	BOOST_CHECK(v2.Major() == 1);
 	BOOST_CHECK(v2.Minor() == 2);
 	BOOST_CHECK(v2.Patch() == 3);
-	BOOST_CHECK(v2.prerelease() == "pre.rel.0");
-	BOOST_CHECK(v2.build() == "b123");
+	BOOST_CHECK(v2.PreRelease() == "pre.rel.0");
+	BOOST_CHECK(v2.Build() == "b123");
 
 	// Check source version is unaffected
 	CHECK_SRC
@@ -136,8 +136,8 @@ BOOST_AUTO_TEST_CASE(reset_major) {
 	BOOST_CHECK(v2.Major() == 2);
 	BOOST_CHECK(v2.Minor() == 0);
 	BOOST_CHECK(v2.Patch() == 0);
-	BOOST_CHECK(v2.prerelease() == "");
-	BOOST_CHECK(v2.build() == "");
+	BOOST_CHECK(v2.PreRelease() == "");
+	BOOST_CHECK(v2.Build() == "");
 
 	// Check invalid values
 	BOOST_CHECK_THROW(v.ResetMajor(-1), versioning::ModificationError);
@@ -154,8 +154,8 @@ BOOST_AUTO_TEST_CASE(reset_minor) {
 	BOOST_CHECK(v2.Major() == 1);
 	BOOST_CHECK(v2.Minor() == 3);
 	BOOST_CHECK(v2.Patch() == 0);
-	BOOST_CHECK(v2.prerelease() == "");
-	BOOST_CHECK(v2.build() == "");
+	BOOST_CHECK(v2.PreRelease() == "");
+	BOOST_CHECK(v2.Build() == "");
 
 	// Check invalid values
 	BOOST_CHECK_THROW(v.ResetMinor(-1), versioning::ModificationError);
@@ -172,8 +172,8 @@ BOOST_AUTO_TEST_CASE(reset_patch) {
 	BOOST_CHECK(v2.Major() == 1);
 	BOOST_CHECK(v2.Minor() == 2);
 	BOOST_CHECK(v2.Patch() == 4);
-	BOOST_CHECK(v2.prerelease() == "");
-	BOOST_CHECK(v2.build() == "");
+	BOOST_CHECK(v2.PreRelease() == "");
+	BOOST_CHECK(v2.Build() == "");
 
 	// Check invalid values
 	BOOST_CHECK_THROW(v.ResetPatch(-1), versioning::ModificationError);
@@ -190,8 +190,8 @@ BOOST_AUTO_TEST_CASE(reset_prerelease) {
 	BOOST_CHECK(v2.Major() == 1);
 	BOOST_CHECK(v2.Minor() == 2);
 	BOOST_CHECK(v2.Patch() == 3);
-	BOOST_CHECK(v2.prerelease() == "alpha.1");
-	BOOST_CHECK(v2.build() == "");
+	BOOST_CHECK(v2.PreRelease() == "alpha.1");
+	BOOST_CHECK(v2.Build() == "");
 
 	// Check source version is unaffected
 	CHECK_SRC
@@ -205,8 +205,8 @@ BOOST_AUTO_TEST_CASE(reset_build) {
 	BOOST_CHECK(v2.Major() == 1);
 	BOOST_CHECK(v2.Minor() == 2);
 	BOOST_CHECK(v2.Patch() == 3);
-	BOOST_CHECK(v2.prerelease() == "pre.rel.0");
-	BOOST_CHECK(v2.build() == "b123");
+	BOOST_CHECK(v2.PreRelease() == "pre.rel.0");
+	BOOST_CHECK(v2.Build() == "b123");
 
 	// Check source version is unaffected
 	CHECK_SRC
@@ -220,24 +220,24 @@ BOOST_AUTO_TEST_CASE(inc_major) {
 	BOOST_CHECK(v2.Major() == 2);
 	BOOST_CHECK(v2.Minor() == 0);
 	BOOST_CHECK(v2.Patch() == 0);
-	BOOST_CHECK(v2.prerelease() == "");
-	BOOST_CHECK(v2.build() == "");
+	BOOST_CHECK(v2.PreRelease() == "");
+	BOOST_CHECK(v2.Build() == "");
 
 	// Check non-default increment
 	v2 = v.IncMajor(3);
 	BOOST_CHECK(v2.Major() == 4);
 	BOOST_CHECK(v2.Minor() == 0);
 	BOOST_CHECK(v2.Patch() == 0);
-	BOOST_CHECK(v2.prerelease() == "");
-	BOOST_CHECK(v2.build() == "");
+	BOOST_CHECK(v2.PreRelease() == "");
+	BOOST_CHECK(v2.Build() == "");
 
 	// Check negative increment
 	v2 = v.IncMajor(-1);
 	BOOST_CHECK(v2.Major() == 0);
 	BOOST_CHECK(v2.Minor() == 0);
 	BOOST_CHECK(v2.Patch() == 0);
-	BOOST_CHECK(v2.prerelease() == "");
-	BOOST_CHECK(v2.build() == "");
+	BOOST_CHECK(v2.PreRelease() == "");
+	BOOST_CHECK(v2.Build() == "");
 
 	// Check too negative increment
 	BOOST_CHECK_THROW(v.IncMajor(-2), versioning::ModificationError);
@@ -254,24 +254,24 @@ BOOST_AUTO_TEST_CASE(inc_minor) {
 	BOOST_CHECK(v2.Major() == 1);
 	BOOST_CHECK(v2.Minor() == 3);
 	BOOST_CHECK(v2.Patch() == 0);
-	BOOST_CHECK(v2.prerelease() == "");
-	BOOST_CHECK(v2.build() == "");
+	BOOST_CHECK(v2.PreRelease() == "");
+	BOOST_CHECK(v2.Build() == "");
 
 	// Check non-default increment
 	v2 = v.IncMinor(3);
 	BOOST_CHECK(v2.Major() == 1);
 	BOOST_CHECK(v2.Minor() == 5);
 	BOOST_CHECK(v2.Patch() == 0);
-	BOOST_CHECK(v2.prerelease() == "");
-	BOOST_CHECK(v2.build() == "");
+	BOOST_CHECK(v2.PreRelease() == "");
+	BOOST_CHECK(v2.Build() == "");
 
 	// Check negative increment
 	v2 = v.IncMinor(-1);
 	BOOST_CHECK(v2.Major() == 1);
 	BOOST_CHECK(v2.Minor() == 1);
 	BOOST_CHECK(v2.Patch() == 0);
-	BOOST_CHECK(v2.prerelease() == "");
-	BOOST_CHECK(v2.build() == "");
+	BOOST_CHECK(v2.PreRelease() == "");
+	BOOST_CHECK(v2.Build() == "");
 
 	// Check too negative increment
 	BOOST_CHECK_THROW(v.IncMinor(-3), versioning::ModificationError);
@@ -288,24 +288,24 @@ BOOST_AUTO_TEST_CASE(inc_patch) {
 	BOOST_CHECK(v2.Major() == 1);
 	BOOST_CHECK(v2.Minor() == 2);
 	BOOST_CHECK(v2.Patch() == 4);
-	BOOST_CHECK(v2.prerelease() == "");
-	BOOST_CHECK(v2.build() == "");
+	BOOST_CHECK(v2.PreRelease() == "");
+	BOOST_CHECK(v2.Build() == "");
 
 	// Check default increment
 	v2 = v.IncPatch(3);
 	BOOST_CHECK(v2.Major() == 1);
 	BOOST_CHECK(v2.Minor() == 2);
 	BOOST_CHECK(v2.Patch() == 6);
-	BOOST_CHECK(v2.prerelease() == "");
-	BOOST_CHECK(v2.build() == "");
+	BOOST_CHECK(v2.PreRelease() == "");
+	BOOST_CHECK(v2.Build() == "");
 
 	// Check negative increment
 	v2 = v.IncPatch(-1);
 	BOOST_CHECK(v2.Major() == 1);
 	BOOST_CHECK(v2.Minor() == 2);
 	BOOST_CHECK(v2.Patch() == 2);
-	BOOST_CHECK(v2.prerelease() == "");
-	BOOST_CHECK(v2.build() == "");
+	BOOST_CHECK(v2.PreRelease() == "");
+	BOOST_CHECK(v2.Build() == "");
 
 	// Check too negative increment
 	BOOST_CHECK_THROW(v.IncPatch(-4), versioning::ModificationError);

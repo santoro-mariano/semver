@@ -54,8 +54,8 @@ namespace versioning {
         int Major() const; ///< Get major version.
         int Minor() const; ///< Get minor version.
         int Patch() const; ///< Get patch version.
-        const std::string prerelease() const; ///< Get prerelease version string.
-        const std::string build() const; ///< Get build version string.
+        const std::string PreRelease() const; ///< Get prerelease version string.
+        const std::string Build() const; ///< Get build version string.
 
         /// Return a copy of version with major component set to specified value.
         BaseVersion SetMajor(const int) const;
