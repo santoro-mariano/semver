@@ -25,46 +25,46 @@ SOFTWARE.
 #include <string>
 #include <sstream>
 #include <utility>
-#include <versioning/base_version.h>
+#include <versioning/read_only_version.h>
 #include "vector_utils.h"
 
-namespace versioning {
-    BaseVersion::BaseVersion(const VersionData data, const VersionComparator & comparator)
+namespace vsn {
+    ReadOnlyVersion::ReadOnlyVersion(VersionData data, const VersionComparator * comparator)
             : data_{ std::move(data) }, comparator_{ comparator } {}
 
-    int BaseVersion::Major() const {
+    int ReadOnlyVersion::Major() const {
         return data_.major;
     }
 
-    int BaseVersion::Minor() const {
+    int ReadOnlyVersion::Minor() const {
         return data_.minor;
     }
 
-    int BaseVersion::Patch() const {
+    int ReadOnlyVersion::Patch() const {
         return data_.patch;
     }
 
-    const std::string BaseVersion::PreRelease() const {
+    const std::string ReadOnlyVersion::PreRelease() const {
         std::stringstream ss;
         splice(ss, data_.prerelease_ids, ".", [](const auto& id) { return id.first;});
         return ss.str();
     }
 
-    const std::string BaseVersion::Build() const {
+    const std::string ReadOnlyVersion::Build() const {
         std::stringstream ss;
         splice(ss, data_.build_ids, ".", [](const auto& id) { return id;});
         return ss.str();
     }
 
-    bool operator<(const BaseVersion& l, const BaseVersion& r) {
-        return l.comparator_.Compare(l.data_, r.data_) == -1;
+    bool operator<(const ReadOnlyVersion& l, const ReadOnlyVersion& r) {
+        return l.comparator_->Compare(l.data_, r.data_) == -1;
     }
 
-    bool operator==(const BaseVersion& l, const BaseVersion& r) {
-        return l.comparator_.Compare(l.data_, r.data_) == 0;
+    bool operator==(const ReadOnlyVersion& l, const ReadOnlyVersion& r) {
+        return l.comparator_->Compare(l.data_, r.data_) == 0;
     }
 
-    std::ostream& operator<<(std::ostream& os, const BaseVersion& v) {
+    std::ostream& operator<<(std::ostream& os, const ReadOnlyVersion& v) {
         os << v.data_.major << "." << v.data_.minor << "." << v.data_.patch;
         std::string prl = v.PreRelease();
         if (!prl.empty()) {
@@ -77,19 +77,19 @@ namespace versioning {
         return os;
     }
 
-    bool operator!=(const BaseVersion& l, const BaseVersion& r) {
+    bool operator!=(const ReadOnlyVersion& l, const ReadOnlyVersion& r) {
         return !(l == r);
     }
 
-    bool operator>(const BaseVersion& l, const BaseVersion& r) {
+    bool operator>(const ReadOnlyVersion& l, const ReadOnlyVersion& r) {
         return r < l;
     }
 
-    bool operator>=(const BaseVersion& l, const BaseVersion& r) {
+    bool operator>=(const ReadOnlyVersion& l, const ReadOnlyVersion& r) {
         return !(l < r);
     }
 
-    bool operator<=(const BaseVersion& l, const BaseVersion& r) {
+    bool operator<=(const ReadOnlyVersion& l, const ReadOnlyVersion& r) {
         return !(l > r);
     }
 }

@@ -22,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef VERSIONING_BASE_VERSION_H
-#define VERSIONING_BASE_VERSION_H
+#ifndef VERSIONING_READ_ONLY_VERSION_H
+#define VERSIONING_READ_ONLY_VERSION_H
 
 #include <string>
 #include <vector>
@@ -32,11 +32,11 @@ SOFTWARE.
 #include "version_modifier.h"
 #include <memory>
 
-namespace versioning {
+namespace vsn {
 
-    class BaseVersion {
+    class ReadOnlyVersion {
     public:
-        BaseVersion(const VersionData data, const VersionComparator & comparator);
+        ReadOnlyVersion(VersionData data, const VersionComparator * comparator);
 
         int Major() const; ///< Get major version.
         int Minor() const; ///< Get minor version.
@@ -44,37 +44,37 @@ namespace versioning {
         const std::string PreRelease() const; ///< Get prerelease version string.
         const std::string Build() const; ///< Get build version string.
 
-        friend bool operator<(const BaseVersion&, const BaseVersion&);
-        friend bool operator==(const BaseVersion&, const BaseVersion&);
-        friend std::ostream& operator<<(std::ostream&s, const BaseVersion&);
+        friend bool operator<(const ReadOnlyVersion&, const ReadOnlyVersion&);
+        friend bool operator==(const ReadOnlyVersion&, const ReadOnlyVersion&);
+        friend std::ostream& operator<<(std::ostream&s, const ReadOnlyVersion&);
 
     protected:
-        const VersionData data_;
+        VersionData data_;
 
     private:
-        const VersionComparator & comparator_;
+        const VersionComparator * comparator_;
     };
 
     /// Test if left-hand version operand is of lower precedence than the right-hand version.
-    bool operator<(const BaseVersion&, const BaseVersion&);
+    bool operator<(const ReadOnlyVersion&, const ReadOnlyVersion&);
 
     /// Test if left-hand version operand if of equal precedence as the right-hand version.
-    bool operator==(const BaseVersion&, const BaseVersion&);
+    bool operator==(const ReadOnlyVersion&, const ReadOnlyVersion&);
 
     /// Output version object to stream using standard semver format (X.Y.Z-PR+B).
-    std::ostream& operator<<(std::ostream&, const BaseVersion&);
+    std::ostream& operator<<(std::ostream&, const ReadOnlyVersion&);
 
     /// Test if left-hand version and right-hand version are of different precedence.
-    bool operator!=(const BaseVersion&, const BaseVersion&);
+    bool operator!=(const ReadOnlyVersion&, const ReadOnlyVersion&);
 
     /// Test if left-hand version operand is of higher precedence than the right-hand version.
-    bool operator>(const BaseVersion&, const BaseVersion&);
+    bool operator>(const ReadOnlyVersion&, const ReadOnlyVersion&);
 
     /// Test if left-hand version operand is of higher or equal precedence as the right-hand version.
-    bool operator>=(const BaseVersion&, const BaseVersion&);
+    bool operator>=(const ReadOnlyVersion&, const ReadOnlyVersion&);
 
     /// Test if left-hand version operand is of lower or equal precedence as the right-hand version.
-    bool operator<=(const BaseVersion&, const BaseVersion&);
+    bool operator<=(const ReadOnlyVersion&, const ReadOnlyVersion&);
 }
 
-#endif //VERSIONING_BASE_VERSION_H
+#endif //VERSIONING_READ_ONLY_VERSION_H

@@ -27,7 +27,7 @@ SOFTWARE.
 
 #include "version_data.h"
 
-namespace versioning {
+namespace vsn {
 
     /// Implementation of various version modification methods.
     /**
@@ -40,31 +40,31 @@ namespace versioning {
         virtual VersionData SetMajor(const VersionData&, const int) const = 0;
 
         /// Set minor version to specified value leaving all other components unchanged.
-        virtual VersionData set_minor(const VersionData&, const int) const = 0;
+        virtual VersionData SetMinor(const VersionData &, const int) const = 0;
 
         /// Set patch version to specified value leaving all other components unchanged.
-        virtual VersionData set_patch(const VersionData&, const int) const = 0;
+        virtual VersionData SetPatch(const VersionData &, const int) const = 0;
 
         /// Set pre-release version to specified value leaving all other components unchanged.
-        virtual VersionData set_prerelease(const VersionData&, const Prerelease_identifiers&) const = 0;
+        virtual VersionData SetPreRelease(const VersionData &, const Prerelease_identifiers &) const = 0;
 
         /// Set build version to specified value leaving all other components unchanged.
-        virtual VersionData set_build(const VersionData&, const Build_identifiers&) const = 0;
+        virtual VersionData SetBuild(const VersionData &, const Build_identifiers &) const = 0;
 
         /// Set major version to specified value resetting all lower-priority components to zero/empty values.
-        virtual VersionData reset_major(const VersionData&, const int) const = 0;
+        virtual VersionData ResetMajor(const VersionData &, const int) const = 0;
 
         /// Set minor version to specified value resetting all lower-priority components to zero/empty values.
-        virtual VersionData reset_minor(const VersionData&, const int) const = 0;
+        virtual VersionData ResetMinor(const VersionData &, const int) const = 0;
 
         /// Set patch version to specified value resetting all lower-priority components to zero/empty values.
-        virtual VersionData reset_patch(const VersionData&, const int) const = 0;
+        virtual VersionData ResetPatch(const VersionData &, const int) const = 0;
 
         /// Set pre-release version to specified value resetting all lower-priority components to zero/empty values.
-        virtual VersionData reset_prerelease(const VersionData&, const Prerelease_identifiers&) const = 0;
+        virtual VersionData ResetPreRelease(const VersionData &, const Prerelease_identifiers &) const = 0;
 
         /// Set build version to specified value.
-        virtual VersionData reset_build(const VersionData&, const Build_identifiers&) const = 0;
+        virtual VersionData ResetBuild(const VersionData &, const Build_identifiers &) const = 0;
     };
 }
 

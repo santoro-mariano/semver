@@ -27,13 +27,12 @@ SOFTWARE.
 
 #include "version_data.h"
 
-namespace versioning {
+namespace vsn {
 
     /// Parse string into Version_data structure according to semantic versioning 2.0.0 rules.
     class VersionParser {
     public:
         virtual VersionData Parse(const std::string&) const = 0;
-
     };
 }
 

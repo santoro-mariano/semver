@@ -26,52 +26,50 @@ SOFTWARE.
 #include "versioning/semver/2_0_0/modifier.h"
 #include "../../exceptions.h"
 
-namespace versioning {	namespace semver {	namespace v200 {
-			VersionData Modifier::SetMajor(const VersionData & s, const int m) const {
-				if (m < 0) throw ModificationError("major version cannot be less than 0");
-				return VersionData{ m, s.minor, s.patch, s.prerelease_ids, s.build_ids };
-			}
-
-			VersionData Modifier::set_minor(const VersionData& s, const int m) const {
-				if (m < 0) throw ModificationError("minor version cannot be less than 0");
-				return VersionData{ s.major, m, s.patch, s.prerelease_ids, s.build_ids };
-			}
-
-			VersionData Modifier::set_patch(const VersionData& s, const int p) const {
-				if (p < 0) throw ModificationError("patch version cannot be less than 0");
-				return VersionData{ s.major, s.minor, p, s.prerelease_ids, s.build_ids };
-			}
-
-			VersionData Modifier::set_prerelease(const VersionData& s, const Prerelease_identifiers& pr) const {
-				return VersionData{ s.major, s.minor, s.patch, pr, s.build_ids };
-			}
-
-			VersionData Modifier::set_build(const VersionData& s, const Build_identifiers& b) const {
-				return VersionData{ s.major, s.minor, s.patch, s.prerelease_ids, b };
-			}
-
-			VersionData Modifier::reset_major(const VersionData&, const int m) const {
-				if (m < 0) throw ModificationError("major version cannot be less than 0");
-				return VersionData{ m, 0, 0, Prerelease_identifiers{}, Build_identifiers{} };
-			}
-
-			VersionData Modifier::reset_minor(const VersionData& s, const int m) const {
-				if (m < 0) throw ModificationError("minor version cannot be less than 0");
-				return VersionData{ s.major, m, 0, Prerelease_identifiers{}, Build_identifiers{} };
-			}
-
-			VersionData Modifier::reset_patch(const VersionData& s, const int p) const {
-				if (p < 0) throw ModificationError("patch version cannot be less than 0");
-				return VersionData{ s.major, s.minor, p, Prerelease_identifiers{}, Build_identifiers{} };
-			}
-
-			VersionData Modifier::reset_prerelease(const VersionData& s, const Prerelease_identifiers& pr) const {
-				return VersionData{ s.major, s.minor, s.patch, pr, Build_identifiers{} };
-			}
-
-			VersionData Modifier::reset_build(const VersionData& s, const Build_identifiers& b) const {
-				return VersionData{ s.major, s.minor, s.patch, s.prerelease_ids, b };
-			}
-		}
+namespace vsn {	namespace semver {
+	VersionData Modifier::SetMajor(const VersionData & s, const int m) const {
+		if (m < 0) throw ModificationError("major version cannot be less than 0");
+		return VersionData{ m, s.minor, s.patch, s.prerelease_ids, s.build_ids };
 	}
-}
+
+	VersionData Modifier::SetMinor(const VersionData &s, const int m) const {
+		if (m < 0) throw ModificationError("minor version cannot be less than 0");
+		return VersionData{ s.major, m, s.patch, s.prerelease_ids, s.build_ids };
+	}
+
+	VersionData Modifier::SetPatch(const VersionData &s, const int p) const {
+		if (p < 0) throw ModificationError("patch version cannot be less than 0");
+		return VersionData{ s.major, s.minor, p, s.prerelease_ids, s.build_ids };
+	}
+
+	VersionData Modifier::SetPreRelease(const VersionData &s, const Prerelease_identifiers &pr) const {
+		return VersionData{ s.major, s.minor, s.patch, pr, s.build_ids };
+	}
+
+	VersionData Modifier::SetBuild(const VersionData &s, const Build_identifiers &b) const {
+		return VersionData{ s.major, s.minor, s.patch, s.prerelease_ids, b };
+	}
+
+	VersionData Modifier::ResetMajor(const VersionData &, const int m) const {
+		if (m < 0) throw ModificationError("major version cannot be less than 0");
+		return VersionData{ m, 0, 0, Prerelease_identifiers{}, Build_identifiers{} };
+	}
+
+	VersionData Modifier::ResetMinor(const VersionData &s, const int m) const {
+		if (m < 0) throw ModificationError("minor version cannot be less than 0");
+		return VersionData{ s.major, m, 0, Prerelease_identifiers{}, Build_identifiers{} };
+	}
+
+	VersionData Modifier::ResetPatch(const VersionData &s, const int p) const {
+		if (p < 0) throw ModificationError("patch version cannot be less than 0");
+		return VersionData{ s.major, s.minor, p, Prerelease_identifiers{}, Build_identifiers{} };
+	}
+
+	VersionData Modifier::ResetPreRelease(const VersionData &s, const Prerelease_identifiers &pr) const {
+		return VersionData{ s.major, s.minor, s.patch, pr, Build_identifiers{} };
+	}
+
+	VersionData Modifier::ResetBuild(const VersionData &s, const Build_identifiers &b) const {
+		return VersionData{ s.major, s.minor, s.patch, s.prerelease_ids, b };
+	}
+}}

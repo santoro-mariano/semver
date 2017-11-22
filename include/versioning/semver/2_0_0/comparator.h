@@ -27,13 +27,11 @@ SOFTWARE.
 
 #include <versioning/version_comparator.h>
 
-namespace versioning { namespace semver { namespace v200 {
-            class Comparator: public VersionComparator {
-            public:
-                int Compare(const VersionData&, const VersionData&) const;
-            };
-        }
-    }
-}
+namespace vsn { namespace semver {
+    class Comparator: public VersionComparator {
+    public:
+        int Compare(const VersionData&, const VersionData&) const override;
+    };
+}}
 
 #endif //VERSIONING_COMPARATOR_H

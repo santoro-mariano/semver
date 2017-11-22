@@ -28,7 +28,7 @@ SOFTWARE.
 #include <vector>
 #include <string>
 
-namespace versioning {
+namespace vsn {
 
     /// Type of prerelease identifier: alphanumeric or numeric.
     /**

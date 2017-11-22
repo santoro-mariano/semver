@@ -31,18 +31,16 @@ SOFTWARE.
 #include "comparator.h"
 #include "modifier.h"
 
-namespace versioning { namespace semver { namespace v200 {
-            /// Concrete version class that binds all semver 2.0.0 functionality together.
-            class Version : public versioning::GenericVersion<Parser, Comparator, Modifier> {
-            public:
-                Version():GenericVersion(){}
+namespace vsn { namespace semver {
+    /// Concrete version class that binds all semver 2.0.0 functionality together.
+    class Version : public vsn::GenericVersion<Parser, Comparator, Modifier> {
+    public:
+        Version():GenericVersion(){}
 
-                Version(const std::string& v):GenericVersion(v){}
+        Version(const std::string& v):GenericVersion(v){}
 
-                Version(const VersionData& v):GenericVersion(v){}
-            };
-        }
-    }
-}
+        Version(const VersionData& v):GenericVersion(v){}
+    };
+}}
 
 #endif //SEMVER_VERSION_H

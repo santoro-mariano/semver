@@ -26,7 +26,7 @@ SOFTWARE.
 
 #include "version_data.h"
 
-namespace versioning {
+namespace vsn {
 
     /// Compare Version_data to another using semantic versioning 2.0.0 rules.
     class VersionComparator {

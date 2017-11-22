@@ -27,50 +27,54 @@ SOFTWARE.
 #include <boost/test/unit_test.hpp>
 #include <versioning/semver/2_0_0/version.h>
 
-using v = versioning::semver::v200::Version;
+namespace vsn { namespace semver {
 
-/// Check parsing logic by performing roundtrip - parse string to version object, then
-/// generate string from that object and check if it's identical to source.
-#define CHECK_RT(SRC) { \
-std::stringstream ss; \
-ss << v(SRC); \
-BOOST_CHECK_EQUAL(ss.str(), SRC); \
-}
+    using v = Version;
 
-BOOST_AUTO_TEST_CASE(test_relational_operators) {
-	BOOST_CHECK(v("1.0.0-alpha") < v("1.0.0-alpha.1"));
-	BOOST_CHECK(v("1.0.0-alpha.1") < v("1.0.0-alpha.beta"));
-	BOOST_CHECK(v("1.0.0-alpha.beta") < v("1.0.0-beta"));
-	BOOST_CHECK(v("1.0.0-beta") < v("1.0.0-beta.2"));
-	BOOST_CHECK(v("1.0.0-beta.2") < v("1.0.0-beta.11"));
-	BOOST_CHECK(v("1.0.0-beta.11") < v("1.0.0-rc.1"));
-	BOOST_CHECK(v("1.0.0-rc.1") < v("1.0.0"));
+	/// Check parsing logic by performing roundtrip - parse string to version object, then
+	/// generate string from that object and check if it's identical to source.
+	#define CHECK_RT(SRC) { \
+	std::stringstream ss; \
+	ss << v(SRC); \
+	BOOST_CHECK_EQUAL(ss.str(), SRC); \
+	}
 
-	BOOST_CHECK(v("1.0.0+rc.1") == v("1.0.0+rc22"));
+	BOOST_AUTO_TEST_CASE(test_relational_operators) {
+        BOOST_CHECK(v("1.0.0-alpha") < v("1.0.0-alpha.1"));
+        BOOST_CHECK(v("1.0.0-alpha.1") < v("1.0.0-alpha.beta"));
+        BOOST_CHECK(v("1.0.0-alpha.beta") < v("1.0.0-beta"));
+        BOOST_CHECK(v("1.0.0-beta") < v("1.0.0-beta.2"));
+        BOOST_CHECK(v("1.0.0-beta.2") < v("1.0.0-beta.11"));
+        BOOST_CHECK(v("1.0.0-beta.11") < v("1.0.0-rc.1"));
+        BOOST_CHECK(v("1.0.0-rc.1") < v("1.0.0"));
 
-	BOOST_CHECK(v("1.0.0+rc.1") != v("1.0.0-rc22"));
+        BOOST_CHECK(v("1.0.0+rc.1") == v("1.0.0+rc22"));
 
-	BOOST_CHECK(v("1.0.0") >= v("1.0.0"));
-	BOOST_CHECK(v("1.0.0") >= v("0.0.9"));
+        BOOST_CHECK(v("1.0.0+rc.1") != v("1.0.0-rc22"));
 
-	BOOST_CHECK(v("2.0.0") > v("1.9.9"));
-}
+        BOOST_CHECK(v("1.0.0") >= v("1.0.0"));
+        BOOST_CHECK(v("1.0.0") >= v("0.0.9"));
 
-BOOST_AUTO_TEST_CASE(test_ostream_output) {
-	CHECK_RT("1.2.3");
-	CHECK_RT("1.2.3-alpha");
-	CHECK_RT("1.2.3-alpha.1.2.3");
-	CHECK_RT("1.2.3+build.1.2.3");
-	CHECK_RT("1.2.3-alpha+build.314");
-	CHECK_RT("1.2.3-alpha.1+build.314");
-	CHECK_RT("1.2.3-alpha.1.2.3+build.314");
-}
+        BOOST_CHECK(v("2.0.0") > v("1.9.9"));
+	}
 
-BOOST_AUTO_TEST_CASE(test_accessors) {
-	auto p = v("1.2.3-pre.rel.1+test.build.321");
-	BOOST_CHECK_EQUAL(p.Major(), 1);
-	BOOST_CHECK_EQUAL(p.Minor(), 2);
-	BOOST_CHECK_EQUAL(p.Patch(), 3);
-	BOOST_CHECK_EQUAL(p.PreRelease(), "pre.rel.1");
-	BOOST_CHECK_EQUAL(p.Build(), "test.build.321");
-}
+	BOOST_AUTO_TEST_CASE(test_ostream_output) {
+        CHECK_RT("1.2.3");
+        CHECK_RT("1.2.3-alpha");
+        CHECK_RT("1.2.3-alpha.1.2.3");
+        CHECK_RT("1.2.3+build.1.2.3");
+        CHECK_RT("1.2.3-alpha+build.314");
+        CHECK_RT("1.2.3-alpha.1+build.314");
+        CHECK_RT("1.2.3-alpha.1.2.3+build.314");
+	}
+
+	BOOST_AUTO_TEST_CASE(test_accessors) {
+        auto p = v("1.2.3-pre.rel.1+test.build.321");
+        BOOST_CHECK_EQUAL(p.Major(), 1);
+        BOOST_CHECK_EQUAL(p.Minor(), 2);
+        BOOST_CHECK_EQUAL(p.Patch(), 3);
+        BOOST_CHECK_EQUAL(p.PreRelease(), "pre.rel.1");
+        BOOST_CHECK_EQUAL(p.Build(), "test.build.321");
+	}
+
+}}

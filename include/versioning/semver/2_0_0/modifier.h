@@ -27,41 +27,39 @@ SOFTWARE.
 
 #include <versioning/version_modifier.h>
 
-namespace versioning { namespace semver { namespace v200 {
-            class Modifier: public VersionModifier {
-            public:
-                /// Set major version to specified value leaving all other components unchanged..
-                VersionData SetMajor(const VersionData&, const int) const;
+namespace vsn { namespace semver {
+    class Modifier: public VersionModifier {
+    public:
+        /// Set major version to specified value leaving all other components unchanged..
+        VersionData SetMajor(const VersionData&, const int) const override;
 
-                /// Set minor version to specified value leaving all other components unchanged.
-                VersionData set_minor(const VersionData&, const int) const;
+        /// Set minor version to specified value leaving all other components unchanged.
+        VersionData SetMinor(const VersionData &, const int) const override;
 
-                /// Set patch version to specified value leaving all other components unchanged.
-                VersionData set_patch(const VersionData&, const int) const;
+        /// Set patch version to specified value leaving all other components unchanged.
+        VersionData SetPatch(const VersionData &, const int) const override;
 
-                /// Set pre-release version to specified value leaving all other components unchanged.
-                VersionData set_prerelease(const VersionData&, const Prerelease_identifiers&) const;
+        /// Set pre-release version to specified value leaving all other components unchanged.
+        VersionData SetPreRelease(const VersionData &, const Prerelease_identifiers &) const override;
 
-                /// Set build version to specified value leaving all other components unchanged.
-                VersionData set_build(const VersionData&, const Build_identifiers&) const;
+        /// Set build version to specified value leaving all other components unchanged.
+        VersionData SetBuild(const VersionData &, const Build_identifiers &) const override;
 
-                /// Set major version to specified value resetting all lower-priority components to zero/empty values.
-                VersionData reset_major(const VersionData&, const int) const;
+        /// Set major version to specified value resetting all lower-priority components to zero/empty values.
+        VersionData ResetMajor(const VersionData &, const int) const override;
 
-                /// Set minor version to specified value resetting all lower-priority components to zero/empty values.
-                VersionData reset_minor(const VersionData&, const int) const;
+        /// Set minor version to specified value resetting all lower-priority components to zero/empty values.
+        VersionData ResetMinor(const VersionData &, const int) const override;
 
-                /// Set patch version to specified value resetting all lower-priority components to zero/empty values.
-                VersionData reset_patch(const VersionData&, const int) const;
+        /// Set patch version to specified value resetting all lower-priority components to zero/empty values.
+        VersionData ResetPatch(const VersionData &, const int) const override;
 
-                /// Set pre-release version to specified value resetting all lower-priority components to zero/empty values.
-                VersionData reset_prerelease(const VersionData&, const Prerelease_identifiers&) const;
+        /// Set pre-release version to specified value resetting all lower-priority components to zero/empty values.
+        VersionData ResetPreRelease(const VersionData &, const Prerelease_identifiers &) const override;
 
-                /// Set build version to specified value.
-                VersionData reset_build(const VersionData&, const Build_identifiers&) const;
-            };
-        }
-    }
-}
+        /// Set build version to specified value.
+        VersionData ResetBuild(const VersionData &, const Build_identifiers &) const override;
+    };
+}}
 
 #endif //VERSIONING_MODIFIER_H

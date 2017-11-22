@@ -25,9 +25,9 @@ SOFTWARE.
 #ifndef VERSIONING_GENERIC_VERSION_H
 #define VERSIONING_GENERIC_VERSION_H
 
-#include "base_version.h"
+#include "read_only_version.h"
 
-namespace versioning {
+namespace vsn {
 
     /// Base class for various version parsing, precedence ordering and data manipulation schemes.
     /**
@@ -36,25 +36,19 @@ namespace versioning {
     and Modifier objects.
     */
     template<typename Parser, typename Comparator, typename Modifier>
-    class GenericVersion: public BaseVersion {
+    class GenericVersion: public ReadOnlyVersion {
     public:
         /// Construct Basic_version object using Parser object to parse default ("0.0.0") version string, Comparator for comparison and Modifier for modification.
-        GenericVersion():BaseVersion(parser_.Parse("0.0.0"), comparator_)
+        GenericVersion():ReadOnlyVersion(parser_.Parse("0.0.0"), &comparator_)
         {}
 
         /// Construct Basic_version object using Parser to parse supplied version string, Comparator for comparison and Modifier for modification.
-        explicit GenericVersion(const std::string version):BaseVersion(parser_.Parse(std::move(version)), comparator_)
+        explicit GenericVersion(const std::string version):ReadOnlyVersion(parser_.Parse(std::move(version)), &comparator_)
         {}
 
         /// Construct Basic_version object using supplied Version_data, Parser, Comparator and Modifier objects.
-        explicit GenericVersion(const VersionData data):BaseVersion(std::move(data), comparator_)
+        explicit GenericVersion(const VersionData data):ReadOnlyVersion(std::move(data), &comparator_)
         {}
-
-        GenericVersion(const GenericVersion &) = default;
-        GenericVersion(GenericVersion &&) noexcept = default;
-
-        GenericVersion &operator=(const GenericVersion&) = default;
-        GenericVersion &operator=(GenericVersion&&) = default;
 
         /// Return a copy of version with major component set to specified value.
         GenericVersion<Parser, Comparator, Modifier> SetMajor(const int m) const {
@@ -63,24 +57,24 @@ namespace versioning {
 
         /// Return a copy of version with the minor component set to specified value.
         GenericVersion<Parser, Comparator, Modifier> SetMinor(const int m) const {
-            return GenericVersion<Parser, Comparator, Modifier>(modifier_.set_minor(data_, m));
+            return GenericVersion<Parser, Comparator, Modifier>(modifier_.SetMinor(data_, m));
         };
 
         /// Return a copy of version with the patch component set to specified value.
         GenericVersion<Parser, Comparator, Modifier> SetPatch(const int p) const {
-            return GenericVersion<Parser, Comparator, Modifier>(modifier_.set_patch(data_, p));
+            return GenericVersion<Parser, Comparator, Modifier>(modifier_.SetPatch(data_, p));
         };
 
         /// Return a copy of version with the pre-release component set to specified value.
         GenericVersion<Parser, Comparator, Modifier> SetPreRelease(const std::string & pr) const {
-                auto vd = parser_->Parse("0.0.0-" + pr);
-                return GenericVersion<Parser, Comparator, Modifier>(modifier_.set_prerelease(data_, vd.prerelease_ids));
+                auto vd = parser_.Parse("0.0.0-" + pr);
+                return GenericVersion<Parser, Comparator, Modifier>(modifier_.SetPreRelease(data_, vd.prerelease_ids));
         };
 
         /// Return a copy of version with the build component set to specified value.
         GenericVersion<Parser, Comparator, Modifier> SetBuild(const std::string & b) const {
-            auto vd = parser_->Parse("0.0.0+" + b);
-            return GenericVersion<Parser, Comparator, Modifier>(modifier_.set_build(data_, vd.build_ids));
+            auto vd = parser_.Parse("0.0.0+" + b);
+            return GenericVersion<Parser, Comparator, Modifier>(modifier_.SetBuild(data_, vd.build_ids));
         };
 
         /// Return a copy of version with the major component reset to specified value.
@@ -88,7 +82,7 @@ namespace versioning {
         Exact implementation of reset is delegated to Modifier object.
         */
         GenericVersion<Parser, Comparator, Modifier> ResetMajor(const int m) const {
-            return GenericVersion<Parser, Comparator, Modifier>(modifier_.reset_major(data_, m));
+            return GenericVersion<Parser, Comparator, Modifier>(modifier_.ResetMajor(data_, m));
         };
 
         /// Return a copy of version with the minor component reset to specified value.
@@ -96,7 +90,7 @@ namespace versioning {
         Exact implementation of reset is delegated to Modifier object.
         */
         GenericVersion<Parser, Comparator, Modifier> ResetMinor(const int m) const {
-            return GenericVersion<Parser, Comparator, Modifier>(modifier_.reset_minor(data_, m));
+            return GenericVersion<Parser, Comparator, Modifier>(modifier_.ResetMinor(data_, m));
         };
 
         /// Return a copy of version with the patch component reset to specified value.
@@ -104,7 +98,7 @@ namespace versioning {
         Exact implementation of reset is delegated to Modifier object.
         */
         GenericVersion<Parser, Comparator, Modifier> ResetPatch(const int p) const {
-            return GenericVersion<Parser, Comparator, Modifier>(modifier_.reset_patch(data_, p));
+            return GenericVersion<Parser, Comparator, Modifier>(modifier_.ResetPatch(data_, p));
         };
 
         /// Return a copy of version with the pre-release component reset to specified value.
@@ -113,8 +107,8 @@ namespace versioning {
         */
         GenericVersion<Parser, Comparator, Modifier> ResetPreRelease(const std::string & pr) const {
             std::string ver = "0.0.0-" + pr;
-            auto vd = parser_->Parse(ver);
-            return GenericVersion<Parser, Comparator, Modifier>(modifier_.reset_prerelease(data_, vd.prerelease_ids));
+            auto vd = parser_.Parse(ver);
+            return GenericVersion<Parser, Comparator, Modifier>(modifier_.ResetPreRelease(data_, vd.prerelease_ids));
         };
 
         /// Return a copy of version with the build component reset to specified value.
@@ -123,8 +117,8 @@ namespace versioning {
         */
         GenericVersion<Parser, Comparator, Modifier> ResetBuild(const std::string & b) const {
                 std::string ver = "0.0.0+" + b;
-                auto vd = parser_->Parse(ver);
-                return GenericVersion<Parser, Comparator, Modifier>(modifier_.reset_build(data_, vd.build_ids));
+                auto vd = parser_.Parse(ver);
+                return GenericVersion<Parser, Comparator, Modifier>(modifier_.ResetBuild(data_, vd.build_ids));
         };
 
         GenericVersion<Parser, Comparator, Modifier> IncMajor(const int i = 1) const {
@@ -144,10 +138,19 @@ namespace versioning {
         static_assert(std::is_base_of<VersionComparator, Comparator>::value, "Comparator parameter must inherit from VersionComparator");
         static_assert(std::is_base_of<VersionModifier, Modifier>::value, "Modifier parameter must inherit from VersionModifier");
 
-        static constexpr Parser parser_ = Parser();
-        static constexpr Comparator comparator_ = Comparator();
-        static constexpr Modifier modifier_ = Modifier();
+        static VersionParser& parser_;
+        static VersionComparator& comparator_;
+        static VersionModifier& modifier_;
     };
+
+    template<typename Parser, typename Comparator, typename Modifier>
+    VersionParser& GenericVersion<Parser,Comparator,Modifier>::parser_ = Parser();
+
+    template<typename Parser, typename Comparator, typename Modifier>
+    VersionComparator& GenericVersion<Parser,Comparator,Modifier>::comparator_ = Comparator();
+
+    template<typename Parser, typename Comparator, typename Modifier>
+    VersionModifier& GenericVersion<Parser,Comparator,Modifier>::modifier_ = Modifier();
 }
 
 #endif //VERSIONING_GENERIC_VERSION_H
