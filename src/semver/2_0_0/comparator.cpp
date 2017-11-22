@@ -28,9 +28,7 @@ SOFTWARE.
 #include <map>
 #include "versioning/semver/2_0_0/comparator.h"
 
-namespace versioning {
-	namespace semver {
-		namespace v200 {
+namespace versioning {	namespace semver {	namespace v200 {
 			// Compare normal version identifiers.
 			int compare_normal(const VersionData& l, const VersionData& r) {
 				if (l.major > r.major) return 1;

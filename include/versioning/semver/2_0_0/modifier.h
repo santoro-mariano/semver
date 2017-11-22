@@ -27,9 +27,7 @@ SOFTWARE.
 
 #include <versioning/version_modifier.h>
 
-namespace versioning {
-    namespace semver {
-        namespace v200 {
+namespace versioning { namespace semver { namespace v200 {
             class Modifier: public VersionModifier {
             public:
                 /// Set major version to specified value leaving all other components unchanged..

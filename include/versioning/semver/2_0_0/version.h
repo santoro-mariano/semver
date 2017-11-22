@@ -31,9 +31,7 @@ SOFTWARE.
 #include "comparator.h"
 #include "modifier.h"
 
-namespace versioning {
-    namespace semver {
-        namespace v200 {
+namespace versioning { namespace semver { namespace v200 {
             /// Concrete version class that binds all semver 2.0.0 functionality together.
             class Version : public versioning::GenericVersion<Parser, Comparator, Modifier> {
             public:

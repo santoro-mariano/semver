@@ -27,9 +27,7 @@ SOFTWARE.
 
 #include <versioning/version_comparator.h>
 
-namespace versioning {
-    namespace semver {
-        namespace v200 {
+namespace versioning { namespace semver { namespace v200 {
             class Comparator: public VersionComparator {
             public:
                 int Compare(const VersionData&, const VersionData&) const;

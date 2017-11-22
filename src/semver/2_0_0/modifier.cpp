@@ -26,9 +26,7 @@ SOFTWARE.
 #include "versioning/semver/2_0_0/modifier.h"
 #include "../../exceptions.h"
 
-namespace versioning {
-	namespace semver {
-		namespace v200 {
+namespace versioning {	namespace semver {	namespace v200 {
 			VersionData Modifier::SetMajor(const VersionData & s, const int m) const {
 				if (m < 0) throw ModificationError("major version cannot be less than 0");
 				return VersionData{ m, s.minor, s.patch, s.prerelease_ids, s.build_ids };

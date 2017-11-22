@@ -1,3 +1,9 @@
+if(WIN32)
+    set(BOOST_INCLUDEDIR "C:/boost_1_64_0")
+    set(BOOST_LIBRARYDIR "C:/boost_1_64_0/stage/lib")
+    set(BOOST_ROOT "C:/boost_1_64_0/boost")
+endif()
+
 set(Boost_USE_STATIC_LIBS   ON)
 set(Boost_USE_MULTITHREADED ON)
 

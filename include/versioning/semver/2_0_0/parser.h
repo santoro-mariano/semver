@@ -29,9 +29,7 @@ SOFTWARE.
 #include <functional>
 #include <versioning/version_parser.h>
 
-namespace versioning {
-    namespace semver {
-        namespace v200 {
+namespace versioning { namespace semver { namespace v200 {
             using Validator = std::function<void(const std::string&, const char)>;
             using State_transition_hook = std::function<void(std::string&)>;
             /// State transition is described by a character that triggers it, a state to transition to and

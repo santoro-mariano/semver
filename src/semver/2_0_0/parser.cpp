@@ -32,9 +32,7 @@ SOFTWARE.
 #pragma warning(disable:4503)
 #endif
 
-namespace versioning {
-	namespace semver {
-        namespace v200 {
+namespace versioning {	namespace semver { namespace v200 {
             const std::vector<std::pair<char, char>> Parser::allowed_prerel_id_chars = {
                     { '0', '9' },{ 'A','Z' },{ 'a','z' },{ '-','-' }
             };

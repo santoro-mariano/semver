@@ -29,110 +29,43 @@ SOFTWARE.
 #include "vector_utils.h"
 
 namespace versioning {
-    BaseVersion::BaseVersion(std::shared_ptr<VersionParser> p, std::shared_ptr<VersionComparator> c, std::shared_ptr<VersionModifier> m)
-            : parser_(std::move(p)), comparator_(std::move(c)), modifier_(std::move(m)), ver_(parser_->Parse("0.0.0")) {}
-
-    BaseVersion::BaseVersion(const std::string& v, std::shared_ptr<VersionParser> p, std::shared_ptr<VersionComparator> c, std::shared_ptr<VersionModifier> m)
-            : parser_(std::move(p)), comparator_(std::move(c)), modifier_(std::move(m)), ver_(parser_->Parse(v)) {}
-
-    BaseVersion::BaseVersion(const VersionData& v, std::shared_ptr<VersionParser> p, std::shared_ptr<VersionComparator> c, std::shared_ptr<VersionModifier> m)
-            : parser_(std::move(p)), comparator_(std::move(c)), modifier_(std::move(m)), ver_(v) {}
+    BaseVersion::BaseVersion(const VersionData data, const VersionComparator & comparator)
+            : data_{ std::move(data) }, comparator_{ comparator } {}
 
     int BaseVersion::Major() const {
-        return ver_.major;
+        return data_.major;
     }
 
     int BaseVersion::Minor() const {
-        return ver_.minor;
+        return data_.minor;
     }
 
     int BaseVersion::Patch() const {
-        return ver_.patch;
+        return data_.patch;
     }
 
     const std::string BaseVersion::PreRelease() const {
         std::stringstream ss;
-        splice(ss, ver_.prerelease_ids, ".", [](const auto& id) { return id.first;});
+        splice(ss, data_.prerelease_ids, ".", [](const auto& id) { return id.first;});
         return ss.str();
     }
 
     const std::string BaseVersion::Build() const {
         std::stringstream ss;
-        splice(ss, ver_.build_ids, ".", [](const auto& id) { return id;});
+        splice(ss, data_.build_ids, ".", [](const auto& id) { return id;});
         return ss.str();
     }
 
-    BaseVersion BaseVersion::SetMajor(const int m) const {
-        return BaseVersion(modifier_->SetMajor(ver_, m), parser_, comparator_, modifier_);
-    }
-
-    BaseVersion BaseVersion::SetMinor(const int m) const {
-        return BaseVersion(modifier_->set_minor(ver_, m), parser_, comparator_, modifier_);
-    }
-
-    BaseVersion BaseVersion::SetPatch(const int p) const {
-        return BaseVersion(modifier_->set_patch(ver_, p), parser_, comparator_, modifier_);
-    }
-
-    BaseVersion BaseVersion::SetPreRelease(
-        const std::string &pr) const {
-        auto vd = parser_->Parse("0.0.0-" + pr);
-        return BaseVersion(modifier_->set_prerelease(ver_, vd.prerelease_ids), parser_, comparator_, modifier_);
-    }
-    
-    BaseVersion BaseVersion::SetBuild(const std::string &b) const {
-        auto vd = parser_->Parse("0.0.0+" + b);
-        return BaseVersion(modifier_->set_build(ver_, vd.build_ids), parser_, comparator_, modifier_);
-    }
-    
-    BaseVersion BaseVersion::ResetMajor(const int m) const {
-        return BaseVersion(modifier_->reset_major(ver_, m), parser_, comparator_, modifier_);
-    }
-    
-    BaseVersion BaseVersion::ResetMinor(const int m) const {
-        return BaseVersion(modifier_->reset_minor(ver_, m), parser_, comparator_, modifier_);
-    }
-    
-    BaseVersion BaseVersion::ResetPatch(const int p) const {
-        return BaseVersion(modifier_->reset_patch(ver_, p), parser_, comparator_, modifier_);
-    }
-    
-    BaseVersion BaseVersion::ResetPreRelease(
-            const std::string &pr) const {
-        std::string ver = "0.0.0-" + pr;
-        auto vd = parser_->Parse(ver);
-        return BaseVersion(modifier_->reset_prerelease(ver_, vd.prerelease_ids), parser_, comparator_, modifier_);
-    }
-    
-    BaseVersion BaseVersion::ResetBuild(
-            const std::string &b) const {
-        std::string ver = "0.0.0+" + b;
-        auto vd = parser_->Parse(ver);
-        return BaseVersion(modifier_->reset_build(ver_, vd.build_ids), parser_, comparator_, modifier_);
-    }
-    
-    BaseVersion BaseVersion::IncMajor(const int i) const {
-        return ResetMajor(ver_.major + i);
-    }
-    
-    BaseVersion BaseVersion::IncMinor(const int i) const {
-        return ResetMinor(ver_.minor + i);
-    }
-    
-    BaseVersion BaseVersion::IncPatch(const int i) const {
-        return ResetPatch(ver_.patch + i);
-    }
-
     bool operator<(const BaseVersion& l, const BaseVersion& r) {
-        return l.comparator_->Compare(l.ver_, r.ver_) == -1;
+        return l.comparator_.Compare(l.data_, r.data_) == -1;
     }
 
     bool operator==(const BaseVersion& l, const BaseVersion& r) {
-        return l.comparator_->Compare(l.ver_, r.ver_) == 0;
+        return l.comparator_.Compare(l.data_, r.data_) == 0;
     }
 
     std::ostream& operator<<(std::ostream& os, const BaseVersion& v) {
-        os << v.ver_.major << "." << v.ver_.minor << "." << v.ver_.patch;
+        os << v.data_.major << "." << v.data_.minor << "." << v.data_.patch;
         std::string prl = v.PreRelease();
         if (!prl.empty()) {
             os << "-" << prl;

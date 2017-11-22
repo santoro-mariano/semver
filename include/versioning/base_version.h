@@ -36,20 +36,7 @@ namespace versioning {
 
     class BaseVersion {
     public:
-        /// Construct Basic_version object using Parser object to parse default ("0.0.0") version string, Comparator for comparison and Modifier for modification.
-        BaseVersion(std::shared_ptr<VersionParser> p, std::shared_ptr<VersionComparator> c, std::shared_ptr<VersionModifier> m);
-
-        /// Construct Basic_version object using Parser to parse supplied version string, Comparator for comparison and Modifier for modification.
-        BaseVersion(const std::string& v, std::shared_ptr<VersionParser> p, std::shared_ptr<VersionComparator> c, std::shared_ptr<VersionModifier> m);
-
-        /// Construct Basic_version object using supplied Version_data, Parser, Comparator and Modifier objects.
-        BaseVersion(const VersionData& v, std::shared_ptr<VersionParser> p, std::shared_ptr<VersionComparator> c, std::shared_ptr<VersionModifier> m);
-
-        /// Construct Basic_version by copying data from another one.
-        BaseVersion(const BaseVersion& v) = default;
-
-        /// Copy version data from another Basic_version to this one.
-        BaseVersion& operator=(const BaseVersion& v) = default;
+        BaseVersion(const VersionData data, const VersionComparator & comparator);
 
         int Major() const; ///< Get major version.
         int Minor() const; ///< Get minor version.
@@ -57,64 +44,15 @@ namespace versioning {
         const std::string PreRelease() const; ///< Get prerelease version string.
         const std::string Build() const; ///< Get build version string.
 
-        /// Return a copy of version with major component set to specified value.
-        BaseVersion SetMajor(const int) const;
-
-        /// Return a copy of version with the minor component set to specified value.
-        BaseVersion SetMinor(const int) const;
-
-        /// Return a copy of version with the patch component set to specified value.
-        BaseVersion SetPatch(const int) const;
-
-        /// Return a copy of version with the pre-release component set to specified value.
-        BaseVersion SetPreRelease(const std::string &) const;
-
-        /// Return a copy of version with the build component set to specified value.
-        BaseVersion SetBuild(const std::string &) const;
-
-        /// Return a copy of version with the major component reset to specified value.
-        /**
-        Exact implementation of reset is delegated to Modifier object.
-        */
-        BaseVersion ResetMajor(const int) const;
-
-        /// Return a copy of version with the minor component reset to specified value.
-        /**
-        Exact implementation of reset is delegated to Modifier object.
-        */
-        BaseVersion ResetMinor(const int) const;
-
-        /// Return a copy of version with the patch component reset to specified value.
-        /**
-        Exact implementation of reset is delegated to Modifier object.
-        */
-        BaseVersion ResetPatch(const int) const;
-
-        /// Return a copy of version with the pre-release component reset to specified value.
-        /**
-        Exact implementation of reset is delegated to Modifier object.
-        */
-        BaseVersion ResetPreRelease(const std::string &) const;
-
-        /// Return a copy of version with the build component reset to specified value.
-        /**
-        Exact implementation of reset is delegated to Modifier object.
-        */
-        BaseVersion ResetBuild(const std::string &) const;
-
-        BaseVersion IncMajor(const int = 1) const;
-        BaseVersion IncMinor(const int = 1) const;
-        BaseVersion IncPatch(const int = 1) const;
-
         friend bool operator<(const BaseVersion&, const BaseVersion&);
         friend bool operator==(const BaseVersion&, const BaseVersion&);
         friend std::ostream& operator<<(std::ostream&s, const BaseVersion&);
 
+    protected:
+        const VersionData data_;
+
     private:
-        std::shared_ptr<VersionParser> parser_;
-        std::shared_ptr<VersionComparator> comparator_;
-        std::shared_ptr<VersionModifier> modifier_;
-        VersionData ver_;
+        const VersionComparator & comparator_;
     };
 
     /// Test if left-hand version operand is of lower precedence than the right-hand version.
