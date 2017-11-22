@@ -1,6 +1,13 @@
 cmake_minimum_required(VERSION 2.8)
 project(versioning)
-set(VERSION_MAJOR   "1")
+
+set(CMAKE_CXX_STANDARD 14)
+
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release)
+endif()
+
+set(VERSION_MAJOR   "2")
 set(VERSION_MINOR   "0")
 set(VERSION_PATCH   "0")
 set(VERSION_RELEASE "")
@@ -18,9 +25,7 @@ if(HAVE_BUILD)
 endif()
 
 if(UNIX)
-	#-Werror
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")
-	add_definitions(-std=c++14)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wextra -pedantic")
 endif()
 
 if(WIN32)
@@ -29,6 +34,8 @@ if(WIN32)
 endif()
 
 if(MSVC)
+    add_definitions(-DWall)
+    add_definitions(-DWX) #Warnings as errors
 	add_definitions(-D_SCL_SECURE_NO_WARNINGS)
 endif()
 
