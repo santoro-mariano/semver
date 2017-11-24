@@ -138,19 +138,19 @@ namespace vsn {
         static_assert(std::is_base_of<VersionComparator, Comparator>::value, "Comparator parameter must inherit from VersionComparator");
         static_assert(std::is_base_of<VersionModifier, Modifier>::value, "Modifier parameter must inherit from VersionModifier");
 
-        static VersionParser& parser_;
-        static VersionComparator& comparator_;
-        static VersionModifier& modifier_;
+        static const VersionParser& parser_;
+        static const VersionComparator& comparator_;
+        static const VersionModifier& modifier_;
     };
 
     template<typename Parser, typename Comparator, typename Modifier>
-    VersionParser& GenericVersion<Parser,Comparator,Modifier>::parser_ = Parser();
+    const VersionParser& GenericVersion<Parser,Comparator,Modifier>::parser_ = Parser();
 
     template<typename Parser, typename Comparator, typename Modifier>
-    VersionComparator& GenericVersion<Parser,Comparator,Modifier>::comparator_ = Comparator();
+    const VersionComparator& GenericVersion<Parser,Comparator,Modifier>::comparator_ = Comparator();
 
     template<typename Parser, typename Comparator, typename Modifier>
-    VersionModifier& GenericVersion<Parser,Comparator,Modifier>::modifier_ = Modifier();
+    const VersionModifier& GenericVersion<Parser,Comparator,Modifier>::modifier_ = Modifier();
 }
 
 #endif //VERSIONING_GENERIC_VERSION_H
